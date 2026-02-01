@@ -58,6 +58,7 @@ describe("recurringService", () => {
         category: categoryId,
         type: "income",
         frequency: "monthly",
+        startDate: jan31,
         nextOccurrence: jan31,
       })
 
@@ -83,6 +84,7 @@ describe("recurringService", () => {
         category: categoryId,
         type: "income",
         frequency: "daily",
+        startDate: monday,
         nextOccurrence: monday,
       })
 
@@ -106,6 +108,7 @@ describe("recurringService", () => {
         category: categoryId,
         type: "income",
         frequency: "yearly",
+        startDate: leapFeb29,
         nextOccurrence: leapFeb29,
       })
 
@@ -131,6 +134,7 @@ describe("recurringService", () => {
         category: categoryId,
         type: "income",
         frequency: "monthly",
+        startDate: jan31,
         nextOccurrence: jan31,
       })
 
@@ -157,6 +161,7 @@ describe("recurringService", () => {
         category: categoryId,
         type: "income",
         frequency: "daily",
+        startDate: new Date(),
         nextOccurrence: new Date(),
       })
       const result = await recurringService.update(
@@ -180,6 +185,7 @@ describe("recurringService", () => {
         category: categoryId,
         type: "income",
         frequency: "daily",
+        startDate: new Date(),
         nextOccurrence: new Date(),
       })
       await recurringService.remove(recurring._id, userId)

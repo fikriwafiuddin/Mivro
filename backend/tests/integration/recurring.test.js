@@ -27,6 +27,7 @@ describe("Recurring Routes Integration", () => {
         category: categoryId,
         type: "expense",
         frequency: "monthly",
+        startDate: new Date(),
         nextOccurrence: new Date(),
       })
 
@@ -66,6 +67,7 @@ describe("Recurring Routes Integration", () => {
         category: categoryId,
         type: "expense",
         frequency: "monthly",
+        startDate: new Date(),
         nextOccurrence: new Date(),
       })
 
@@ -96,6 +98,7 @@ describe("Recurring Routes Integration", () => {
         category: categoryId,
         type: "expense",
         frequency: "monthly",
+        startDate: new Date(),
         nextOccurrence: new Date(),
         status: "active",
       })
@@ -117,6 +120,7 @@ describe("Recurring Routes Integration", () => {
         category: categoryId,
         type: "expense",
         frequency: "monthly",
+        startDate: new Date(),
         nextOccurrence: new Date(),
       })
 

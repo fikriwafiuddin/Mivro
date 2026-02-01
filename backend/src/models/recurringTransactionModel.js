@@ -29,6 +29,10 @@ const recurringTransactionSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    startDate: {
+      type: Date,
+      required: true,
+    },
     lastExecuted: {
       type: Date,
       default: null,

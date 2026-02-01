@@ -14,8 +14,9 @@ import CategorySummary from "../models/categorySummaryModel.js"
  * @param {String} frequency - daily, weekly, monthly, yearly
  * @returns {Date} Next occurrence date
  */
-function calculateNextOccurrence(currentDate, frequency) {
+function calculateNextOccurrence(currentDate, frequency, anchorDate) {
   const next = new Date(currentDate)
+  const anchor = anchorDate ? new Date(anchorDate) : next
 
   switch (frequency) {
     case "daily":
@@ -24,22 +25,33 @@ function calculateNextOccurrence(currentDate, frequency) {
     case "weekly":
       next.setDate(next.getDate() + 7)
       break
-    case "monthly":
-      // Handle month overflow (e.g., Jan 31 -> Feb 28)
-      const currentDay = next.getDate()
-      next.setMonth(next.getMonth() + 1)
-      // If day changed (overflow), set to last day of previous month
-      if (next.getDate() !== currentDay) {
-        next.setDate(0)
-      }
+    case "monthly": {
+      const anchorDay = anchor.getDate()
+      // Move to next month, starting from day 1 to avoid phantom overflows
+      next.setMonth(next.getMonth() + 1, 1)
+      // Get last day of the new month
+      const lastDay = new Date(
+        next.getFullYear(),
+        next.getMonth() + 1,
+        0,
+      ).getDate()
+      next.setDate(Math.min(anchorDay, lastDay))
       break
-    case "yearly":
+    }
+    case "yearly": {
+      const anchorDay = anchor.getDate()
+      const anchorMonth = anchor.getMonth()
+
       next.setFullYear(next.getFullYear() + 1)
-      // Handle Feb 29 leap year edge case
-      if (next.getMonth() !== currentDate.getMonth()) {
-        next.setDate(0)
-      }
+      next.setMonth(anchorMonth, 1)
+      const lastDay = new Date(
+        next.getFullYear(),
+        next.getMonth() + 1,
+        0,
+      ).getDate()
+      next.setDate(Math.min(anchorDay, lastDay))
       break
+    }
     default:
       throw new Error("Invalid frequency")
   }
@@ -186,6 +198,7 @@ const processRecurrings = async (user) => {
         currentOccurrence = calculateNextOccurrence(
           currentOccurrence,
           recurring.frequency,
+          recurring.startDate,
         )
       }
 
@@ -234,6 +247,7 @@ const create = async (data, user) => {
     category,
     type,
     frequency,
+    startDate: new Date(startDate),
     nextOccurrence: new Date(startDate),
     notes,
   })
@@ -242,7 +256,7 @@ const create = async (data, user) => {
 }
 
 const update = async (data, user) => {
-  const { id, type, amount, category, frequency, status, notes } = data
+  const { id, type, amount, category, frequency, notes } = data
 
   // Check recurring exists
   const recurring = await RecurringTransaction.findOne({ _id: id, user })
@@ -273,7 +287,6 @@ const update = async (data, user) => {
   recurring.category = category
   recurring.type = type
   recurring.frequency = frequency
-  recurring.status = status
   recurring.notes = notes
 
   await recurring.save()

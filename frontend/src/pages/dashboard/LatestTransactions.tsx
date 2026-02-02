@@ -107,7 +107,7 @@ function LatestTransactions() {
       <CardContent>
         <div className="space-y-4">
           {recentTransactionsData.map((transaction) => (
-            <TransactionCard transaction={transaction} />
+            <TransactionCard key={transaction._id} transaction={transaction} />
           ))}
         </div>
       </CardContent>

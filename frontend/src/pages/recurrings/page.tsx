@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button"
 import { PlusIcon, RefreshCwIcon, AlertTriangleIcon } from "lucide-react"
 import { useGetAllRecurrings } from "@/services/hooks/recurringHook"
 import RecurringCard from "@/components/recurring/RecurringCard"
-import { useNavigate } from "react-router"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import RecurringForm from "@/components/recurring/RecurringForm"
@@ -16,7 +15,6 @@ function RecurringTransactionsPage() {
     error,
     refetch,
   } = useGetAllRecurrings()
-  const navigate = useNavigate()
   const [openForm, setOpenForm] = useState<boolean>(false)
 
   return (
@@ -82,7 +80,7 @@ function RecurringTransactionsPage() {
           <p className="text-muted-foreground mb-6">
             Create one to automate your financial tracking
           </p>
-          <Button onClick={() => navigate("/recurrings/add")}>
+          <Button onClick={() => setOpenForm(true)}>
             Create your first recurring
           </Button>
         </div>

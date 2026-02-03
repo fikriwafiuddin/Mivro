@@ -86,12 +86,13 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <SidebarMenu>
+        <SidebarMenu className="flex justify-center">
           <SidebarMenuItem>
-            <SidebarMenuButton className="text-sidebar-primary hover:text-primary hover:bg-transparent">
-              <div>
-                <img src="/logo.webp" alt="logo" className="size-7" />
-              </div>
+            <SidebarMenuButton
+              size="lg"
+              className="text-sidebar-primary hover:text-primary hover:bg-transparent"
+            >
+              <img src="/logo.webp" alt="logo" className="size-7" />
               <span className="font-bold text-xl">Mivro</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

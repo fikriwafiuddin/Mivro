@@ -7,15 +7,20 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { useGetAllBudgets } from "@/services/hooks/budgetHook"
-import { AlertTriangleIcon, FilterIcon, PlusIcon } from "lucide-react"
+import {
+  AlertTriangleIcon,
+  FilterIcon,
+  PiggyBankIcon,
+  PlusIcon,
+} from "lucide-react"
 import { useState } from "react"
 
 function BudgetsPage() {
   const [startDate, setStartDate] = useState<Date>(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1),
   )
   const [endDate, setEndDate] = useState<Date>(
-    new Date(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0))
+    new Date(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)),
   )
   const {
     isPending: isFetchingBudgets,
@@ -96,10 +101,23 @@ function BudgetsPage() {
             <BudgetCardSkeleton />
             <BudgetCardSkeleton />
           </>
-        ) : (
+        ) : budgets && budgets.length > 0 ? (
           budgets.map((budget) => (
             <BudgetCard key={budget._id} budget={budget} />
           ))
+        ) : (
+          <div className="col-span-full flex flex-col items-center justify-center py-20 bg-muted/30 rounded-lg border-2 border-dashed">
+            <PiggyBankIcon className="h-12 w-12 text-muted-foreground mb-4 opacity-20" />
+            <h3 className="text-xl font-semibold text-muted-foreground">
+              No budgets found
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              Start by adding your first budget
+            </p>
+            <Button onClick={() => setIsAddingBudget(true)}>
+              Create your first budget
+            </Button>
+          </div>
         )}
       </div>
 

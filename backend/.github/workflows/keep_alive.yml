@@ -1,0 +1,19 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # Berjalan setiap hari Selasa dan Jumat jam 00:00 UTC
+    # (Supabase pause setelah 7 hari tidak aktif)
+    - cron: "0 0 * * 2,5"
+  workflow_dispatch: # Memungkinkan Anda menjalankan manual untuk testing
+
+jobs:
+  ping_supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Request to Supabase
+        run: |
+          curl -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/users?id=eq.1&select=*" \
+          -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}" \
+          -I
